@@ -4,18 +4,36 @@ import cors from "cors";
 import booksRoute from "./routes/booksRoute.js";
 import dotenv from "dotenv";
 
-// Load environment variables from .env file in local environment
+// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-const PORT = 5555;
+const PORT = process.env.VITE_REACT_APP_PORT || 5555;
 const mongoDBURL = process.env.MONGO_DB_URL;
+const NODE_ENV = process.env.NODE_ENV || "development"; // Use 'development' by default
 
 // Middleware for parsing request body
 app.use(express.json());
 
-// Middleware for handling CORS POLICY
-app.use(cors());
+// CORS Configuration Based on Environment
+if (NODE_ENV === "development") {
+  // Allow all origins in development
+  app.use(cors());
+} else {
+  // In production, only allow specific domains
+  const allowedOrigins = ['https://etona-hrhn.vercel.app'];
+
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS policy'));
+      }
+    },
+    credentials: true
+  }));
+}
 
 // Test API endpoint
 app.get("/", (request, response) => {
@@ -27,7 +45,7 @@ app.use("/webnovel", booksRoute);
 
 // Connect to MongoDB and start the server
 mongoose
-  .connect(mongoDBURL)
+  .connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("App connected to the database");
     app.listen(PORT, () => {
