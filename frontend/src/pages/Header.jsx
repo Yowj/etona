@@ -13,8 +13,8 @@ const Header = () => {
           <button className="text-yellow-50 font-semibold">Links</button>
           <button className="text-yellow-50 font-semibold">AST Feedback Recording</button>
         </div>
-       <CreateButton/>
-       <PasteField/>
+        <CreateButton />
+        <PasteField />
       </div>
     </div>
   );
