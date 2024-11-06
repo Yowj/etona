@@ -8,33 +8,33 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.VITE_REACT_APP_PORT || 5555;
+const PORT = process.env.VITE_REACT_APP_PORT || 5555; // Use environment PORT or default to 5555 if not set
 const mongoDBURL = process.env.MONGO_DB_URL;
-const NODE_ENV = process.env.NODE_ENV || "development"; // Use 'development' by default
 
 // Middleware for parsing request body
 app.use(express.json());
 
-// CORS Configuration Based on Environment
+// Middleware for handling CORS POLICY
 if (NODE_ENV === "development") {
-  // Allow all origins in development
+  console.log("CORS: Allowing all origins (Development Mode)");
   app.use(cors());
 } else {
-  // In production, only allow specific domains
+  console.log("CORS: Restricting origins (Production Mode)");
   const allowedOrigins = ['https://etona-hrhn.vercel.app'];
 
   app.use(cors({
     origin: function (origin, callback) {
+      console.log(`Request Origin: ${origin}`); // Log each request origin
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
+        console.error(`Blocked by CORS: ${origin}`);
         callback(new Error('Not allowed by CORS policy'));
       }
     },
     credentials: true
   }));
 }
-
 // Test API endpoint
 app.get("/", (request, response) => {
   return response.status(200).send("Welcome to the API!");
@@ -45,7 +45,7 @@ app.use("/webnovel", booksRoute);
 
 // Connect to MongoDB and start the server
 mongoose
-  .connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(mongoDBURL)
   .then(() => {
     console.log("App connected to the database");
     app.listen(PORT, () => {
@@ -56,3 +56,4 @@ mongoose
     console.error("Database connection error:", error);
     process.exit(1); // Exit the process with a failure code
   });
+
