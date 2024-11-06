@@ -1,25 +1,6 @@
 {
-<<<<<<< HEAD
     "rewrites": [{ 
         "source": "/(.*)", 
         "destination": "/index.html"
     }]
 }
-=======
-    "installCommand": "npm install --legacy-peer-deps",
-    "version": 2,
-    "builds": [
-      {
-        "src": "index.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "index.js"
-      }
-    ]
-  }
-  
->>>>>>> 86222e2b83d836115315efc4e246712fa634742e
