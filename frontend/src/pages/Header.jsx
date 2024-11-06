@@ -1,6 +1,6 @@
 import React from "react";
-import PasteField from "../components/pasteField";
-import CreateButton from "../components/createButton";
+import PasteField from "../components/PasteField";
+import CreateButton from "../components/CreateButton";
 
 const Header = () => {
   return (
@@ -11,7 +11,9 @@ const Header = () => {
             W
           </div>
           <button className="text-yellow-50 font-semibold">Links</button>
-          <button className="text-yellow-50 font-semibold">AST Feedback Recording</button>
+          <button className="text-yellow-50 font-semibold">
+            AST Feedback Recording
+          </button>
         </div>
         <CreateButton />
         <PasteField />
