@@ -10,20 +10,28 @@ import DeleteButton from "../components/DeleteButton.jsx";
 const Home = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("Payment Questions"); // Start with "Payment Questions"
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("Payment Questions");
   const [allCategories, setAllCategories] = useState([]);
 
   // Function to fetch data from the server
-  const fetchData = async () => {
+  const fetchData = async (isInitial = false) => {
     try {
-      setLoading(true);
+      if (isInitial) {
+        setLoading(true);
+      }
+
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel`);
       console.log(response.data.data);
       setData(response.data.data);
       setSelectedCategory("All Templates");
       setAllCategories(response.data.data.map((x) => x.category));
       console.log("allCategories in fetchData", allCategories);
-      setLoading(false);
+
+      if (isInitial) {
+        setLoading(false);
+        setInitialLoading(false);
+      }
     } catch (error) {
       console.error("Problem in fetchData", error);
       setLoading(false);
@@ -33,7 +41,7 @@ const Home = () => {
   // useEffect to fetch data initially and set up polling
   useEffect(() => {
     // Fetch data initially
-    fetchData();
+    fetchData(true);
 
     // Set up polling to fetch data every 5 seconds
     const interval = setInterval(() => {
@@ -54,7 +62,7 @@ const Home = () => {
     <>
       <Header />
 
-      {loading ? (
+      {initialLoading ? (
         <Spinner />
       ) : (
         <div className="flex flex-col h-screen bg-gray-100">
