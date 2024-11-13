@@ -11,9 +11,7 @@ const Header = () => {
             W
           </div>
           <button className="text-yellow-50 font-semibold">Links</button>
-          <button className="text-yellow-50 font-semibold">
-            AST Feedback Recording
-          </button>
+          <a className="text-yellow-50 font-semibold" href="https://docs.google.com/spreadsheets/d/1BQq5-jk5ZvfcqK910-ZJHr62KPczCGH31tvKkzdPMUo/">AST Feedback Recording</a>
         </div>
         <CreateButton />
         <PasteField />
