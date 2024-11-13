@@ -11,7 +11,7 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("Payment Questions");
+  const [selectedCategory, setSelectedCategory] = useState("All Templates");
   const [allCategories, setAllCategories] = useState([]);
 
   // Function to fetch data from the server
@@ -22,11 +22,18 @@ const Home = () => {
       }
 
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel`);
-      console.log(response.data.data);
-      setData(response.data.data);
-      setSelectedCategory("All Templates");
-      setAllCategories(response.data.data.map((x) => x.category));
-      console.log("allCategories in fetchData", allCategories);
+      const fetchedData = response.data.data;
+
+      // Extract categories from data
+      setAllCategories(fetchedData.map((x) => x.category));
+
+      // Filter data if a specific category is selected, except "All Templates"
+      if (selectedCategory && selectedCategory !== "All Templates") {
+        const filteredData = fetchedData.filter((item) => item.category === selectedCategory);
+        setData(filteredData);
+      } else {
+        setData(fetchedData);
+      }
 
       if (isInitial) {
         setLoading(false);
@@ -50,12 +57,10 @@ const Home = () => {
 
     // Clear the interval when component unmounts
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedCategory]);
 
   const handleCategoryClick = (category) => {
-    handleGeneral(setData, setLoading, category);
     setSelectedCategory(category);
-    setLoading(true);
   };
 
   return (
@@ -72,7 +77,7 @@ const Home = () => {
               <div className="mb-4 flex justify-between">
                 <p className="font-semibold text-base">Categories</p>
                 <button
-                  onClick={() => window.location.reload()}
+                  onClick={() => setSelectedCategory("All Templates")}
                   className="text-gray-700 cursor-pointer font-semibold hover:text-gray-900 focus:outline-none"
                 >
                   Show All Templates
