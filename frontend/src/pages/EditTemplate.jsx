@@ -12,16 +12,26 @@ const EditTemplate = () => {
   const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
-
+  const categories = [
+    "Payment",
+    "Contract",
+    "Bugs",
+    "Inkstone",
+    "Events",
+    "Other",
+    "Greetings",
+  ];
   useEffect(() => {
     try {
-      axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`).then((response) => {
-        const data = response.data;
-        setCategory(data.category);
-        setQuestion(data.question);
-        setAnswer(data.answer);
-        setLoading(false);
-      });
+      axios
+        .get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`)
+        .then((response) => {
+          const data = response.data;
+          setCategory(data.category);
+          setQuestion(data.question);
+          setAnswer(data.answer);
+          setLoading(false);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -36,14 +46,16 @@ const EditTemplate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`, newData);
+      await axios.put(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`,
+        newData
+      );
       // Navigate after successful update
       window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-lg">
@@ -62,14 +74,21 @@ const EditTemplate = () => {
               >
                 Category
               </label>
-              <input
-                type="text"
+              <select
                 id="category"
-                className="w-full p-2 border border-gray-300 rounded-lg"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                placeholder="Enter your question here"
-              />
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
