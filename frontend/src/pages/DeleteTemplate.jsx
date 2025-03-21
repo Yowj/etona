@@ -11,7 +11,9 @@ const DeleteTemplate = () => {
 
   const onConfirm = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`);
+      await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel/${id}`
+      );
       console.log("Deleted successfully");
       enqueueSnackbar("Deleted successfully", { variant: "success" });
       navigate("/"); // Navigate to home or any desired page

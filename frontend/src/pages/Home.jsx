@@ -21,7 +21,9 @@ const Home = () => {
         setLoading(true);
       }
 
-      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/webnovel`
+      );
       const fetchedData = response.data.data;
 
       // Extract categories from data
@@ -29,7 +31,9 @@ const Home = () => {
 
       // Filter data if a specific category is selected, except "All Templates"
       if (selectedCategory && selectedCategory !== "All Templates") {
-        const filteredData = fetchedData.filter((item) => item.category === selectedCategory);
+        const filteredData = fetchedData.filter(
+          (item) => item.category === selectedCategory
+        );
         setData(filteredData);
       } else {
         setData(fetchedData);
@@ -99,10 +103,10 @@ const Home = () => {
 
             {/* Main content */}
             <main className="w-3/4 bg-slate-100 min-h-screen p-10">
-              <h1 className="text-2xl font-semibold mb-6">{selectedCategory}</h1>
+              <h1 className="text-xl font-semibold mb-6">{selectedCategory}</h1>
               {data.map((x) => (
                 <div key={x._id}>
-                  <h2 className="text-lg font-semibold">{x.question}</h2>
+                  <h2 className="text-base font-semibold">{x.question}</h2>
                   <p className="text-gray-700 mt-2">{x.answer}</p>
 
                   <div className="flex justify-between mt-4 items-center">

@@ -43,6 +43,14 @@ const Header = () => {
                   >
                     Check-in Recording
                   </a>
+                  <a
+                    href="https://activity.webnovel.com/noah/844556559"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition duration-200"
+                  >
+                    Author Benefits
+                  </a>
                 </div>
               </div>
             )}
